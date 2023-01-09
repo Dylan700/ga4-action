@@ -1,0 +1,17 @@
+name: 'GA4 Event'
+author: 'Dylan700'
+description: 'A GitHub Action for sending offline events to Google Analytics 4 from your repository workflows.'
+inputs:
+  event-name:
+    description: 'The name of the event'
+    required: false
+    default: 'update_github'
+  measurement-id:
+    description: 'The measurement id for your GA4 property'
+    required: true
+  api-secret:
+    description: 'The API secret for you GA4 property'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
