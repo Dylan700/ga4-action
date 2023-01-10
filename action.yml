@@ -1,6 +1,9 @@
 name: 'GA4 Event'
 author: 'Dylan700'
 description: 'A GitHub Action for sending offline events to Google Analytics 4 from your repository workflows.'
+branding: 
+  icon: "bar-chart-2"
+  color: "white"
 inputs:
   event-name:
     description: 'The name of the event'
