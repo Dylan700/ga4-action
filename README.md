@@ -3,6 +3,10 @@
 
 <img alt="GA4 Logo" src="./images/GA4-logo.png" height=200>
 
+[![Continuous Integration](https://github.com/Dylan700/ga4-action/actions/workflows/ci.yaml/badge.svg)](https://github.com/Dylan700/ga4-action/actions/workflows/ci.yaml)
+
+<hr>
+
 This action sends offline events to Google Analytics 4 from your repository workflows.
 
 The most common use case is to record deployment events in Google Analytics when updates to your app, website or other system occur. This allows you to attribute changes in other analytics data (such as number of views), against changes in your system (such as a new release or UI update).
