@@ -5,10 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "jestinit": "jest --init",
-    "predist": "tsc ./src/*.ts --outdir ./dist/",
-    "dist": "ncc build dist/index.js --license licenses.txt",
-    "clean": "rimraf dist coverage *.log"
+    "predist": "tsc ./src/*.ts --outdir ./build/",
+    "dist": "ncc build build/index.js --license licenses.txt --minify",
+    "clean": "rimraf dist coverage build *.log"
   },
   "repository": {
     "type": "git",

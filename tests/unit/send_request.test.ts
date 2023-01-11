@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { send_request } from "../../src";
+import { send_request } from "../../src/main";
 
 jest.mock('@actions/github', () => {
 	const originalModule = jest.requireActual('@actions/github');
