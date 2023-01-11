@@ -35,6 +35,10 @@ All events will contain the description and URL of the commit that triggered the
 >
 > To create a new secret, navigate in the Google Analytics UI to *Admin > Data Streams > choose your stream > Measurement Protocol > Create*
 
+## `dry-run`
+
+When "true", only the validation server will be used to validate the request, and the request will not be sent to your GA4 property.
+
 ## Example usage
 
 ```yaml
