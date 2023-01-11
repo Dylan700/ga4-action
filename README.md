@@ -4,6 +4,9 @@
 <img alt="GA4 Logo" src="./images/GA4-logo.png" height=200>
 
 [![Continuous Integration](https://github.com/Dylan700/ga4-action/actions/workflows/ci.yaml/badge.svg)](https://github.com/Dylan700/ga4-action/actions/workflows/ci.yaml)
+[![CodeQL](https://github.com/Dylan700/ga4-action/actions/workflows/codeql-analysis.yaml/badge.svg)](https://github.com/Dylan700/ga4-action/actions/workflows/codeql-analysis.yaml)
+
+</div>
 
 <hr>
 
