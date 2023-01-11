@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
 
@@ -23,3 +23,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - run: yarn test
+      - uses: ./
+        with:
+          event-name: testing
+          measurement-id: measurement-id
+          api-secret: api-secret
+          dry-run: true

@@ -52,7 +52,7 @@ async function main(){
 		}
 		
 		// validate request first
-		const response = await send_request(api_secret, measurement_id, event_name, payload.head_commit.message, `${payload.github_server_url}/${payload.github_repository}/commit/${payload.github_sha}/`, true);
+		const response = await send_request(api_secret, measurement_id, event_name, payload?.head_commit?.message, `${payload.github_server_url}/${payload.github_repository}/commit/${payload.github_sha}/`, true);
 		if(dry_run === "true"){
 			console.log("Validation server response: " + JSON.stringify(response.data));
 			return;
