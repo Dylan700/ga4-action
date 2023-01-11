@@ -1,4 +1,4 @@
-import { isSuccessfulValidation } from "../../src";
+import { isSuccessfulValidation } from "../../src/main";
 
 const validResponse = {
 	status: 200,
@@ -16,7 +16,13 @@ const oneInvalidResponse = {
 	headers: {},
 	config: {},
 	data: {
-		validationMessages: ["error"]
+		validationMessages: [
+			{
+				fieldPath: "path",
+				description: "error",
+				validationCode: "01",
+			}
+		]
 	}
 }
 
@@ -26,18 +32,22 @@ const multiInvalidResponse = {
 	headers: {},
 	config: {},
 	data: {
-		validationMessages: ["error", "another error", "yes, one more error here"]
+		validationMessages: [
+			{
+				fieldPath: "path",
+				description: "failed!",
+				validationCode: "01",
+			},
+			{
+				fieldPath: "path",
+				description: "yes, another error",
+				validationCode: "02",
+			}
+		]
 	}
 }
 
-jest.mock('@actions/core', () => {
-	const originalModule = jest.requireActual('@actions/core');
-	return {
-	  __esModule: true,
-	  ...originalModule,
-	  setFailed: jest.fn(() => {}),
-	};
-});
+jest.mock("@actions/core");
 
 describe("isSuccessfulValidation", () => {
 	it("should return true when there are no validation messages", () => {
