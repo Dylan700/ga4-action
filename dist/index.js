@@ -95,12 +95,13 @@ function isSuccessfulValidation(response) {
 }
 exports.isSuccessfulValidation = isSuccessfulValidation;
 function main() {
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var event_name, measurement_id, api_secret, dry_run, payload, response, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 6]);
+                    _b.trys.push([0, 5, , 6]);
                     event_name = (0, core_1.getInput)('event-name');
                     measurement_id = (0, core_1.getInput)('measurement-id');
                     api_secret = (0, core_1.getInput)('api-secret');
@@ -109,9 +110,9 @@ function main() {
                     if (dry_run === "true") {
                         console.warn("Running action as 'dry-run', requests will only be sent to validation server.");
                     }
-                    return [4 /*yield*/, send_request(api_secret, measurement_id, event_name, payload.head_commit.message, "".concat(payload.github_server_url, "/").concat(payload.github_repository, "/commit/").concat(payload.github_sha, "/"), true)];
+                    return [4 /*yield*/, send_request(api_secret, measurement_id, event_name, (_a = payload === null || payload === void 0 ? void 0 : payload.head_commit) === null || _a === void 0 ? void 0 : _a.message, "".concat(payload.github_server_url, "/").concat(payload.github_repository, "/commit/").concat(payload.github_sha, "/"), true)];
                 case 1:
-                    response = _a.sent();
+                    response = _b.sent();
                     if (dry_run === "true") {
                         console.log("Validation server response: " + JSON.stringify(response.data));
                         return [2 /*return*/];
@@ -121,14 +122,14 @@ function main() {
                     return [4 /*yield*/, send_request(api_secret, measurement_id, event_name, payload.head_commit.message, "".concat(payload.head_commit.url, "/"))];
                 case 2:
                     // validation successful! Let's send the actual request
-                    _a.sent();
+                    _b.sent();
                     return [3 /*break*/, 4];
                 case 3:
                     (0, core_1.setFailed)("Request validation failed. " + JSON.stringify(response.data));
-                    _a.label = 4;
+                    _b.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    error_1 = _a.sent();
+                    error_1 = _b.sent();
                     (0, core_1.setFailed)(error_1.message);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
