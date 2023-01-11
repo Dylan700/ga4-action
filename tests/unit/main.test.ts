@@ -1,4 +1,4 @@
-import { setFailed, debug } from "@actions/core";
+import { getInput, setFailed } from "@actions/core";
 import axios from "axios";
 import { main } from "../../src";
 
@@ -17,16 +17,7 @@ jest.mock('@actions/github', () => {
 	};
 });
 
-jest.mock('@actions/core', () => {
-	const originalModule = jest.requireActual('@actions/core');
-	return {
-	  __esModule: true,
-	  ...originalModule,
-	  setFailed: jest.fn(() => {}),
-	  debug: jest.fn(() => {}),
-	};
-});
-
+jest.mock('@actions/core');
 jest.mock("axios");
 
 describe("main", () => {
@@ -61,4 +52,19 @@ describe("main", () => {
 		await main();
 		expect(setFailed).toBeCalledTimes(0);
 	})
+	it("should only send requests to validation server if dry-run is enabled", async () => {
+		axios.post.mockReturnValue({
+			status: 200,
+			statusText: "OK",
+			headers: {},
+			config: {},
+			data: {
+				validationMessages: []
+			}
+		})
+		getInput.mockReturnValue("true");
+		await main();
+		expect(axios.post).toBeCalledTimes(1);
+		expect(axios.post).toBeCalledWith(expect.stringContaining("debug"), expect.anything(), expect.anything());
+	});
 })

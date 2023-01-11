@@ -15,6 +15,9 @@ inputs:
   api-secret:
     description: 'The API secret for you GA4 property'
     required: true
+  dry-run:
+    description: 'When "true", only the validation server will be used to validate the request, and the request will not be sent to your GA4 property'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'

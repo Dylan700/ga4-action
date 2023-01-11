@@ -44,10 +44,20 @@ async function main(){
 		const event_name = getInput('event-name');
 		const measurement_id = getInput('measurement-id');
 		const api_secret = getInput('api-secret');
+		const dry_run = getInput('dry-run');
 		const payload = context.payload;
+
+		if(dry_run === "true"){
+			console.warn("Running action as 'dry-run', requests will only be sent to validation server.");
+		}
 		
 		// validate request first
 		const response = await send_request(api_secret, measurement_id, event_name, payload.head_commit.message, `${payload.github_server_url}/${payload.github_repository}/commit/${payload.github_sha}/`, true);
+		if(dry_run === "true"){
+			console.log("Validation server response: " + JSON.stringify(response.data));
+			return;
+		}
+
 		if(isSuccessfulValidation(response)){
 			// validation successful! Let's send the actual request
 			await send_request(api_secret, measurement_id, event_name, payload.head_commit.message, `${payload.head_commit.url}/`);
