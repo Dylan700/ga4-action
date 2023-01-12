@@ -45,7 +45,7 @@ When "true", only the validation server will be used to validate the request, an
 ## Example usage
 
 ```yaml
-uses: Dylan700/ga4-action@v1.0.0
+uses: Dylan700/ga4-action@latest
 with:
   event-name: update_website
   measurement-id: ${{secrets.ga4_measurement_id}}
