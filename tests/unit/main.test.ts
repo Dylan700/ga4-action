@@ -1,21 +1,21 @@
-import { error, getInput, setFailed } from "@actions/core";
-import axios from "axios";
-import { main } from "../../src/main";
+import { error, getInput, setFailed } from "@actions/core"
+import axios from "axios"
+import { main } from "../../src/main"
 
-jest.mock('@actions/github', () => {
-	const originalModule = jest.requireActual('@actions/github');
+jest.mock("@actions/github", () => {
+	const originalModule = jest.requireActual("@actions/github")
 	return {
-	  __esModule: true,
-	  ...originalModule,
-	  context: {
-		payload: {
-			head_commit: {
-				message: "mocked message"
+		__esModule: true,
+		...originalModule,
+		context: {
+			payload: {
+				head_commit: {
+					message: "mocked message"
+				}
 			}
-		}
-	  },
-	};
-});
+		},
+	}
+})
 
 const badValidationResponse = {
 	status: 200,
@@ -31,7 +31,7 @@ const badValidationResponse = {
 			}
 		]
 	}
-};
+}
 
 const goodValidationResponse = {
 	status: 200,
@@ -41,45 +41,45 @@ const goodValidationResponse = {
 	data: {
 		validationMessages: []
 	}
-};
+}
 
-jest.mock('@actions/core');
-jest.mock("axios");
+jest.mock("@actions/core")
+jest.mock("axios")
 
 describe("main", () => {
 	it("should call setFailed if validation fails", async () => {
-		axios.post.mockReturnValue(badValidationResponse);
-		await main();
-		expect(setFailed).toBeCalled();
+		axios.post.mockReturnValue(badValidationResponse)
+		await main()
+		expect(setFailed).toBeCalled()
 	})
 	it("should output errors if validation fails", async () => {
-		axios.post.mockReturnValue(badValidationResponse);
-		await main();
-		expect(error).toBeCalled();
-		expect(error).toBeCalledWith(expect.stringContaining("failed!"));
+		axios.post.mockReturnValue(badValidationResponse)
+		await main()
+		expect(error).toBeCalled()
+		expect(error).toBeCalledWith(expect.stringContaining("failed!"))
 	})
 	it("should call setFailed if an error occurs anywhere", async () => {
-		axios.post.mockImplementation(() => {throw new Error("Mocked error")});
-		await main();
-		expect(setFailed).toBeCalled();
+		axios.post.mockImplementation(() => {throw new Error("Mocked error")})
+		await main()
+		expect(setFailed).toBeCalled()
 	})
 	it("should not call setFailed if everything works as expected", async () => {
-		axios.post.mockReturnValue(goodValidationResponse);
-		await main();
-		expect(setFailed).toBeCalledTimes(0);
+		axios.post.mockReturnValue(goodValidationResponse)
+		await main()
+		expect(setFailed).toBeCalledTimes(0)
 	})
 	it("should send requests to validation server only, when dry-run is enabled", async () => {
-		axios.post.mockReturnValue(goodValidationResponse);
-		getInput.mockReturnValue("true");
-		await main();
-		expect(axios.post).toBeCalledTimes(1);
-		expect(axios.post).toBeCalledWith(expect.stringContaining("debug"), expect.anything(), expect.anything());
-	});
+		axios.post.mockReturnValue(goodValidationResponse)
+		getInput.mockReturnValue("true")
+		await main()
+		expect(axios.post).toBeCalledTimes(1)
+		expect(axios.post).toBeCalledWith(expect.stringContaining("debug"), expect.anything(), expect.anything())
+	})
 
 	it("should output errors when validation fails, when dry-run is enabled", async () => {
-		axios.post.mockReturnValue(badValidationResponse);
-		await main();
-		expect(error).toBeCalled();
-		expect(error).toBeCalledWith(expect.stringContaining("failed!"));
-	});
+		axios.post.mockReturnValue(badValidationResponse)
+		await main()
+		expect(error).toBeCalled()
+		expect(error).toBeCalledWith(expect.stringContaining("failed!"))
+	})
 })

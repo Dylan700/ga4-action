@@ -4,4 +4,4 @@ type ValidationMessage = {
 	validationCode: string // reason why the validation failed (as a code)
 }
 
-export default ValidationMessage;
+export default ValidationMessage
