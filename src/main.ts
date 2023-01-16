@@ -1,4 +1,4 @@
-import { setFailed, debug, getInput, warning, notice, error } from "@actions/core"
+import { setFailed, debug, getInput, warning, notice, error, getBooleanInput } from "@actions/core"
 import { context } from "@actions/github"
 import axios, { AxiosResponse } from "axios"
 import ValidationMessage from "./types/ValidationMessage"
@@ -156,29 +156,34 @@ async function main(){
 		const event_name = getInput("event-name")
 		const measurement_id = getInput("measurement-id")
 		const api_secret = getInput("api-secret")
-		const dry_run = getInput("dry-run")
+		const dry_run = getBooleanInput("dry-run")
 		const property_id = getInput("property-id")
 		const ga4_credentials = getInput("service-account-credentials")
 		const payload = context.payload
 
-		if(dry_run === "true"){
+		if(dry_run){
 			warning("Running action as 'dry-run', requests will only be sent to validation server.")
-		}else if(property_id != ""){
+		}
+		if(!dry_run && property_id != "" && ga4_credentials){
 			// write the credentials to a file for GA4
 			await writeFile("./google_key.json", ga4_credentials).catch(() => 
 				error("Unable to write credentials to json file for Google API authentication. Authentication will probably fail now."))
-			await configure_analytics_admin(new admin.AnalyticsAdminServiceClient({keyFilename: "./google_key.json"}), property_id).catch(() => 
+			try{
+				await configure_analytics_admin(new admin.AnalyticsAdminServiceClient({keyFilename: "./google_key.json"}), property_id)
+			}catch(error: any){
 				error(`Unable to configure GA4 with custom dimensions. Please ensure: 
 				1. You provided the correct property id 
 				2. You have created a service account in Google Cloud with the Google Analytics Admin API enabled
 				3. The service account is added to your GA4 property as a user with editor privileges
 				4. The service account .json key credentials file is included as a secret in your repository`
-				))
+				)
+			}
+			
 		}
 		
 		// validate request first
 		const response = await send_request(api_secret, measurement_id, event_name, payload?.head_commit?.message, `${payload.github_server_url}/${payload.github_repository}/commit/${payload.github_sha}/`, true)
-		if(dry_run === "true"){
+		if(dry_run){
 			if(isSuccessfulValidation(response)){
 				notice("Validation server returned no errors.")
 				return

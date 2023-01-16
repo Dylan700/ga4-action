@@ -25,6 +25,8 @@ The most common use case is to record deployment events in Google Analytics when
 | measurement-id | true | The [measurement id](https://support.google.com/analytics/answer/12270356?hl=en) for your GA4 property.
 | api-secret | true | The API secret for you GA4 property.
 | dry-run | false | When `true`, only the validation server will be used to validate the request, and the request will not be sent to your GA4 property.
+| property-id | false | The id of you GA4 property. |
+| service-account-credentials | false | This variable should be passed as a secret, containing the contents of your Google Cloud service account key file credentials in json format. |
 
 ### Detailed Description
 #### `event-name`
@@ -50,7 +52,7 @@ All events will contain the description and URL of the commit that triggered the
 
 #### `dry-run`
 
-When "true", only the validation server will be used to validate the request, and the request will not be sent to your GA4 property.
+When true, only the validation server will be used to validate the request, and the request will not be sent to your GA4 property.
 
 #### `property-id`
 
