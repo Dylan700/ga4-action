@@ -17,6 +17,7 @@ inputs:
     required: true
   dry-run:
     description: 'When true, only the validation server will be used to validate the request, and the request will not be sent to your GA4 property'
+    default: 'false'
     required: false
   property-id:
     description: 'The id of you GA4 property. If this value is set, the action will configure custom dimensions to make viewing event data easier'
