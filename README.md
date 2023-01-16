@@ -15,6 +15,12 @@ This action sends offline events to Google Analytics 4 from your repository work
 The most common use case is to record deployment events in Google Analytics when updates to your app, website or other system occur. This allows you to attribute changes in other analytics data (such as number of views), against changes in your system (such as a new release or UI update).
 </div>
 
+## Table of Contents
+1. [Action Inputs](#Inputs)
+1. [Example Usage](#Example-usage)
+1. [Configuring Service Account Credentials](#configuring-service-account-credentials)
+1. [Contributions](#Contributions)
+
 ## Inputs
 
 ### Summary
@@ -93,4 +99,7 @@ with:
 
 You can view your GitHub Events using the realtime view, or if you've enabled autoconfigured dimensions, you can view by description and url, or create a custom card.
 ![custom card](./images/custom-card.png)
-![event report](./images/event-report.png)
+![event report](./images/Event-report.png)
+
+## Contributions
+Contributions are welcome! If you have something to add or fix, just make a pull request to be reviewed.
