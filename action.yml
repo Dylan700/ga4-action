@@ -16,7 +16,13 @@ inputs:
     description: 'The API secret for you GA4 property'
     required: true
   dry-run:
-    description: 'When "true", only the validation server will be used to validate the request, and the request will not be sent to your GA4 property'
+    description: 'When true, only the validation server will be used to validate the request, and the request will not be sent to your GA4 property'
+    required: false
+  property-id:
+    description: 'The id of you GA4 property. If this value is set, the action will configure custom dimensions to make viewing event data easier'
+    required: false
+  service-account-credentials:
+    description: "This variable should be passed as a secret, containing the contents of your Google Cloud service account key file credentials in json format."
     required: false
 runs:
   using: 'node16'

@@ -1,5 +1,6 @@
-import { error, getInput, setFailed } from "@actions/core"
+import { error, getBooleanInput, getInput, setFailed } from "@actions/core"
 import axios from "axios"
+import { writeFile } from "fs/promises"
 import { main } from "../../src/main"
 
 jest.mock("@actions/github", () => {
@@ -45,6 +46,8 @@ const goodValidationResponse = {
 
 jest.mock("@actions/core")
 jest.mock("axios")
+jest.mock("fs/promises")
+jest.mock("@google-analytics/admin")
 
 describe("main", () => {
 	it("should call setFailed if validation fails", async () => {
@@ -70,16 +73,22 @@ describe("main", () => {
 	})
 	it("should send requests to validation server only, when dry-run is enabled", async () => {
 		axios.post.mockReturnValue(goodValidationResponse)
-		getInput.mockReturnValue("true")
+		getBooleanInput.mockReturnValue(true)
 		await main()
 		expect(axios.post).toBeCalledTimes(1)
 		expect(axios.post).toBeCalledWith(expect.stringContaining("debug"), expect.anything(), expect.anything())
 	})
-
 	it("should output errors when validation fails, when dry-run is enabled", async () => {
 		axios.post.mockReturnValue(badValidationResponse)
 		await main()
 		expect(error).toBeCalled()
 		expect(error).toBeCalledWith(expect.stringContaining("failed!"))
+	})
+	it("should write credentials to file if credentials and property id are supplied, and dry-run is false", async () => {
+		writeFile.mockResolvedValue(true)
+		getBooleanInput.mockReturnValue(false)
+		getInput.mockReturnValue("ok")
+		await main()
+		expect(writeFile).toBeCalledTimes(1)
 	})
 })
