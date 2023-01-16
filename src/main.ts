@@ -48,19 +48,19 @@ async function configure_analytics_admin(client: AnalyticsAdminServiceClient, pr
 	// configure dimensions exist
 	const [dimensions] = await client.listCustomDimensions({parent: propertyName})
 	if(!dimensions.some(d => d.parameterName === "description")){
-		notice("Creating dimension for Description...")
+		debug("Creating dimension for Description...")
 		await client.createCustomDimension({
 			parent: propertyName,
 			customDimension: descriptionDim
 		})
-		notice("Done.")
+		debug("Done.")
 	}else{
-		notice("Description dimension already exists, let's check if it's configured correctly")
+		debug("Description dimension already exists, let's check if it's configured correctly")
 		if(!compare_subset(descriptionDim, dimensions.filter(d => d.parameterName === "description")[0])){
-			warning("Description dimension is configured incorrectly!")
+			debug("Description dimension is configured incorrectly!")
 			if(dimensions.filter(d => d.parameterName === "description")[0].scope != descriptionDim.scope){
-				warning("Description dimension is configured with the incorrect scope but it cannot be changed after creation!")
-				notice("Archiving dimension then recreating...")
+				debug("Description dimension is configured with the incorrect scope but it cannot be changed after creation!")
+				debug("Archiving dimension then recreating...")
 				await client.archiveCustomDimension({name: dimensions.filter(d => d.parameterName === "description")[0].name})
 				await client.createCustomDimension({
 					parent: propertyName,
@@ -76,26 +76,26 @@ async function configure_analytics_admin(client: AnalyticsAdminServiceClient, pr
 						paths: ["display_name", "description"]
 					}
 				})
-				notice("Description dimension has been updated")
+				debug("Description dimension has been updated")
 			}
 		}
-		notice("Done.")
+		debug("Done.")
 	}
 
 	if(!dimensions.some(d => d.parameterName === "url")){
-		notice("Creating dimension for URL...")
+		debug("Creating dimension for URL...")
 		await client.createCustomDimension({
 			parent: propertyName,
 			customDimension: urlDim
 		})
-		notice("Done.")
+		debug("Done.")
 	}else{
-		notice("URL dimension already exists, let's check if it's configured correctly")
+		debug("URL dimension already exists, let's check if it's configured correctly")
 		if(!compare_subset(urlDim, dimensions.filter(d => d.parameterName === "url")[0])){
-			warning("URL dimension is configured incorrectly!")
+			debug("URL dimension is configured incorrectly!")
 			if(dimensions.filter(d => d.parameterName === "url")[0].scope != urlDim.scope){
-				warning("URL dimension is configured with the incorrect scope but it cannot be changed after creation!")
-				notice("Archiving dimension then recreating...")
+				debug("URL dimension is configured with the incorrect scope but it cannot be changed after creation!")
+				debug("Archiving dimension then recreating...")
 				await client.archiveCustomDimension({name: dimensions.filter(d => d.parameterName === "url")[0].name})
 				await client.createCustomDimension({
 					parent: propertyName,
@@ -111,10 +111,10 @@ async function configure_analytics_admin(client: AnalyticsAdminServiceClient, pr
 						paths: ["display_name", "description"]
 					}
 				})
-				notice("URL dimension has been updated")
+				debug("URL dimension has been updated")
 			}
 		}
-		notice("Done.")
+		debug("Done.")
 	}
 }
 
